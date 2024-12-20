@@ -44,7 +44,7 @@ public class JDBCSelectTest {
         Article article = new Article(id, regDate, updateDate, subject, content);
         articles.add(article);
       }
-      
+
       System.out.println("결과 : " + articles);
 
     } catch (ClassNotFoundException e) {
