@@ -33,6 +33,7 @@ public class App {
         String subject = sc.nextLine();
 
         System.out.print("내용 : ");
+
         String content = sc.nextLine();
         int id = ++articleLastId;
 
