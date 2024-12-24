@@ -167,7 +167,36 @@ public class App {
 
       System.out.printf("%d번 게시물이 수정되었습니다.\n", id);
 
-    } else if (rq.getUrlPath().equals("exit")) {
+    } else if (rq.getUrlPath().equals("/usr/article/delete")) {
+      int id = rq.getIntParam("id", 0);
+
+      if (id == 0) {
+        System.out.println("id를 올바르게 입력해주세요.");
+        return;
+      }
+
+      SecSql sql = new SecSql();
+      sql.append("SELECT COUNT(*) > 0");
+      sql.append("FROM article");
+      sql.append("WHERE id = ?", id);
+
+      boolean articleIsEmpty = MysqlUtil.selectRowBooleanValue(sql);
+
+      if(!articleIsEmpty) {
+        System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+        return;
+      }
+
+      sql = new SecSql();
+      sql.append("DELETE");
+      sql.append("FROM article");
+      sql.append("WHERE id = ?", id);
+
+      MysqlUtil.delete(sql);
+
+      System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
+
+    }  else if (rq.getUrlPath().equals("exit")) {
       System.out.println("프로그램을 종료합니다.");
       System.exit(0); // 프로그램 강제종료
     } else {
