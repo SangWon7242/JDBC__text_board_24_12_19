@@ -95,11 +95,57 @@ public class App {
           System.out.printf("%d | %s\n", (int) articleMap.get("id"), articleMap.get("subject")));
 
 
+    } else if (rq.getUrlPath().equals("/usr/article/detail")) {
+      int id = rq.getIntParam("id", 0);
+
+      if (id == 0) {
+        System.out.println("id를 올바르게 입력해주세요.");
+        return;
+      }
+
+      SecSql sql = new SecSql();
+      sql.append("SELECT COUNT(*) > 0");
+      sql.append("FROM article");
+      sql.append("WHERE id = ?", id);
+
+      boolean articleIsEmpty = MysqlUtil.selectRowBooleanValue(sql);
+
+      if(!articleIsEmpty) {
+        System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+        return;
+      }
+
+      sql = new SecSql();
+      sql.append("SELECT *");
+      sql.append("FROM article");
+      sql.append("WHERE id = ?", id);
+
+      Map<String, Object> articleMap = MysqlUtil.selectRow(sql);
+
+      System.out.printf("== %d번 게시물 상세보기 ==\n", id);
+      System.out.printf("번호 : %d\n", (int) articleMap.get("id"));
+      System.out.printf("작성날짜 : %s\n", articleMap.get("regDate"));
+      System.out.printf("수정날짜 : %s\n", articleMap.get("updateDate"));
+      System.out.printf("제목 : %s\n", articleMap.get("subject"));
+      System.out.printf("내용 : %s\n", articleMap.get("content"));
+
     } else if (rq.getUrlPath().equals("/usr/article/modify")) {
       int id = rq.getIntParam("id", 0);
 
       if (id == 0) {
         System.out.println("id를 올바르게 입력해주세요.");
+        return;
+      }
+
+      SecSql sql = new SecSql();
+      sql.append("SELECT COUNT(*) > 0");
+      sql.append("FROM article");
+      sql.append("WHERE id = ?", id);
+
+      boolean articleIsEmpty = MysqlUtil.selectRowBooleanValue(sql);
+
+      if(!articleIsEmpty) {
+        System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
         return;
       }
 
@@ -110,7 +156,7 @@ public class App {
       System.out.print("내용 : ");
       String content = sc.nextLine();
 
-      SecSql sql = new SecSql();
+      sql = new SecSql();
       sql.append("UPDATE article");
       sql.append("SET updateDate = NOW()");
       sql.append(", `subject` = ?", subject);
