@@ -1,16 +1,9 @@
 package com.sbs.board;
 
-import com.sbs.board.article.Article;
 import com.sbs.board.article.ArticleController;
 import com.sbs.board.container.Container;
 import com.sbs.board.dbUtil.MysqlUtil;
-import com.sbs.board.dbUtil.SecSql;
 
-import java.sql.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class App {
