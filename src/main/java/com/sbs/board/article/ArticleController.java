@@ -2,16 +2,12 @@ package com.sbs.board.article;
 
 import com.sbs.board.Rq;
 import com.sbs.board.container.Container;
-import com.sbs.board.dbUtil.MysqlUtil;
-import com.sbs.board.dbUtil.SecSql;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class ArticleController {
-  private ArticleService articleService;
+  private final ArticleService articleService;
   public Scanner sc;
 
   public ArticleController() {
