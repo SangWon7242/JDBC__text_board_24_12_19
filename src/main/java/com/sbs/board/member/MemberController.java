@@ -9,9 +9,11 @@ import java.util.Scanner;
 
 public class MemberController {
   public Scanner sc;
+  private final MemberService memberService;
 
   public MemberController() {
     sc = Container.sc;
+    memberService = Container.memberService;
   }
 
   public void doJoin(Rq rq) {
@@ -76,15 +78,7 @@ public class MemberController {
       break;
     }
 
-    SecSql sql = new SecSql();
-    sql.append("INSERT INTO `member`");
-    sql.append("SET regDate = NOW()");
-    sql.append(", updateDate = NOW()");
-    sql.append(", username = ?", username);
-    sql.append(", `password` = ?", password);
-    sql.append(", `name` = ?", name);
-
-    MysqlUtil.insert(sql);
+    memberService.join(username, password, name);
 
     System.out.printf("\"%s\"님 회원가입이 완료되었습니다.\n", username);
   }
