@@ -3,15 +3,18 @@ package com.sbs.board;
 import com.sbs.board.article.ArticleController;
 import com.sbs.board.container.Container;
 import com.sbs.board.dbUtil.MysqlUtil;
+import com.sbs.board.member.MemberController;
 
 import java.util.Scanner;
 
 public class App {
 
   public ArticleController articleController;
+  public MemberController memberController;
 
   public App() {
     articleController = Container.articleController;
+    memberController = Container.memberController;
   }
 
   private static boolean isDevMode() {
@@ -22,14 +25,12 @@ public class App {
 
   // 로직의 시작점
   public void run() {
-    Scanner sc = new Scanner(System.in);
-
     System.out.println("== 자바 텍스트 게시판 시작 ==");
 
     try {
       while (true) {
         System.out.print("명령) ");
-        String cmd = sc.nextLine();
+        String cmd = Container.sc.nextLine();
 
         Rq rq = new Rq(cmd);
 
@@ -43,11 +44,12 @@ public class App {
       }
     } finally {
       System.out.println("== 자바 텍스트 게시판 종료 ==");
-      sc.close();
+      Container.sc.close();
     }
   }
 
   private void doAction(Rq rq) {
+
     if (rq.getUrlPath().equals("/usr/article/write")) {
       articleController.doWrite();
     } else if (rq.getUrlPath().equals("/usr/article/list")) {
@@ -58,7 +60,9 @@ public class App {
       articleController.doModify(rq);
     } else if (rq.getUrlPath().equals("/usr/article/delete")) {
       articleController.doDelete(rq);
-    }  else if (rq.getUrlPath().equals("exit")) {
+    } else if (rq.getUrlPath().equals("/usr/member/join")) {
+      memberController.doJoin(rq);
+    } else if (rq.getUrlPath().equals("exit")) {
       System.out.println("프로그램을 종료합니다.");
       System.exit(0); // 프로그램 강제종료
     } else {
