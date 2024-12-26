@@ -21,6 +21,7 @@ public class MemberController {
     String password;
     String passwordConfirm;
     String name;
+    Member member;
     
     // 아이디 입력
     while (true) {
@@ -29,6 +30,13 @@ public class MemberController {
       
       if(username.trim().isEmpty()) {
         System.out.println("로그인 아이디를 입력해주세요.");
+        continue;
+      }
+
+      member = memberService.findByUsername(username);
+
+      if(member != null) {
+        System.out.printf("\"%s\" 회원은 존재합니다.\n", username);
         continue;
       }
 

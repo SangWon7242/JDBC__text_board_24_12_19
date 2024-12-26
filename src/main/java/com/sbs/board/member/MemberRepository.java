@@ -6,6 +6,7 @@ import com.sbs.board.dbUtil.SecSql;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MemberRepository {
   private List<Member> memberList;
@@ -24,5 +25,20 @@ public class MemberRepository {
     sql.append(", `name` = ?", name);
 
     MysqlUtil.insert(sql);
+  }
+
+  public Member findByUsername(String username) {
+    SecSql sql = new SecSql();
+    sql.append("SELECT *");
+    sql.append("FROM `member`");
+    sql.append("WHERE username = ?", username);
+
+    Map<String, Object> memberMap = MysqlUtil.selectRow(sql);
+
+    if(memberMap.isEmpty()) {
+      return null;
+    }
+
+    return new Member(memberMap);
   }
 }
