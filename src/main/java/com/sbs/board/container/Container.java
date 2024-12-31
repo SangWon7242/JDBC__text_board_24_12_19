@@ -3,7 +3,6 @@ package com.sbs.board.container;
 import com.sbs.board.article.ArticleController;
 import com.sbs.board.article.ArticleRepository;
 import com.sbs.board.article.ArticleService;
-import com.sbs.board.controller.Controller;
 import com.sbs.board.member.MemberController;
 import com.sbs.board.member.MemberRepository;
 import com.sbs.board.member.MemberService;

@@ -3,6 +3,7 @@ package com.sbs.board.article;
 import com.sbs.board.Rq;
 import com.sbs.board.container.Container;
 import com.sbs.board.controller.Controller;
+import com.sbs.board.member.Member;
 
 import java.util.List;
 import java.util.Scanner;
@@ -18,7 +19,7 @@ public class ArticleController implements Controller {
 
   public void performAction(Rq rq) {
     switch (rq.getUrlPath()) {
-      case "/usr/article/write" -> doWrite();
+      case "/usr/article/write" -> doWrite(rq);
       case "/usr/article/list" -> showList();
       case "/usr/article/detail" -> showDetail(rq);
       case "/usr/article/modify" -> doModify(rq);
@@ -27,7 +28,12 @@ public class ArticleController implements Controller {
     }
   }
 
-  public void doWrite() {
+  public void doWrite(Rq rq) {
+    if(!rq.isLogined()) {
+      System.out.println("로그인 후 이용해주세요.");
+      return;
+    }
+
     System.out.println("== 게시물 작성 ==");
 
     System.out.print("제목 : ");
@@ -46,7 +52,10 @@ public class ArticleController implements Controller {
       return;
     }
 
-    int id = articleService.write(subject, content);
+    Member member = (Member) rq.getSessionAttr("loginedMember");
+    int memberId = member.getId();
+
+    int id = articleService.write(memberId, subject, content);
 
     System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
   }
@@ -85,6 +94,7 @@ public class ArticleController implements Controller {
     System.out.printf("번호 : %d\n", article.getId());
     System.out.printf("작성날짜 : %s\n", article.getRegDate());
     System.out.printf("수정날짜 : %s\n", article.getUpdateDate());
+    System.out.printf("작성자 : %d\n", article.getMemberId());
     System.out.printf("제목 : %s\n", article.getSubject());
     System.out.printf("내용 : %s\n", article.getContent());
   }
@@ -97,6 +107,10 @@ public class ArticleController implements Controller {
       return;
     }
 
+    if(!rq.isLogined()) {
+      System.out.println("로그인 후 이용해주세요.");
+      return;
+    }
 
     Article article = articleService.findById(id);
 
@@ -133,6 +147,11 @@ public class ArticleController implements Controller {
 
     if (id == 0) {
       System.out.println("id를 올바르게 입력해주세요.");
+      return;
+    }
+
+    if(!rq.isLogined()) {
+      System.out.println("로그인 후 이용해주세요.");
       return;
     }
 

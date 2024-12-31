@@ -14,11 +14,12 @@ public class ArticleRepository {
     articleList = new ArrayList<>();
   }
 
-  public int write(String subject, String content) {
+  public int write(int memberId, String subject, String content) {
     SecSql sql = new SecSql();
     sql.append("INSERT INTO article");
     sql.append("SET regDate = NOW()");
     sql.append(", updateDate = NOW()");
+    sql.append(", memberId = ?", memberId);
     sql.append(", `subject` = ?", subject);
     sql.append(", content = ?", content);
 

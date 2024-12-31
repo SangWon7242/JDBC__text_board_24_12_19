@@ -39,7 +39,7 @@ public class App {
         MysqlUtil.setDBInfo("localhost", "root", "", "text_board");
         MysqlUtil.setDevMode(isDevMode());
         // DB 끝
-        
+
         // 액션 메서드 시작
         doAction(rq);
       }
@@ -63,10 +63,9 @@ public class App {
   }
 
   private Controller getControllerByUrl(String urlPath) {
-    if(urlPath.startsWith("/usr/article/")) {
+    if (urlPath.startsWith("/usr/article/")) {
       return articleController;
-    }
-    else if(urlPath.startsWith("/usr/member/")) {
+    } else if (urlPath.startsWith("/usr/member/")) {
       return memberController;
     }
 

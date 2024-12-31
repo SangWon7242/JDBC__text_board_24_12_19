@@ -11,6 +11,7 @@ public class Article {
   private final int id;
   private final LocalDateTime regDate;
   private LocalDateTime updateDate;
+  private final int memberId;
   private String subject;
   private String content;
 
@@ -18,6 +19,7 @@ public class Article {
     this.id = (int) articleMap.get("id");
     this.regDate = (LocalDateTime) articleMap.get("regDate");
     this.updateDate = (LocalDateTime) articleMap.get("updateDate");
+    this.memberId = (int) articleMap.get("memberId");
     this.subject = (String) articleMap.get("subject");
     this.content = (String) articleMap.get("content");
   }
