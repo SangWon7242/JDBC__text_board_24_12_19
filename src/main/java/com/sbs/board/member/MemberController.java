@@ -2,18 +2,29 @@ package com.sbs.board.member;
 
 import com.sbs.board.Rq;
 import com.sbs.board.container.Container;
+import com.sbs.board.controller.Controller;
 import com.sbs.board.dbUtil.MysqlUtil;
 import com.sbs.board.dbUtil.SecSql;
 
 import java.util.Scanner;
 
-public class MemberController {
+public class MemberController implements Controller {
   public Scanner sc;
   private final MemberService memberService;
 
   public MemberController() {
     sc = Container.sc;
     memberService = Container.memberService;
+  }
+
+  public void performAction(Rq rq) {
+    switch (rq.getUrlPath()) {
+      case "/usr/member/join" -> doJoin(rq);
+      case "/usr/member/login" -> doLogin(rq);
+      case "/usr/member/logout" -> doLogout(rq);
+      case "/usr/member/me" -> showMe(rq);
+      default -> System.out.println("해당 경로는 존재하지 않습니다.");
+    }
   }
 
   public void doJoin(Rq rq) {

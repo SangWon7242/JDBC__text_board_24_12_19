@@ -2,6 +2,7 @@ package com.sbs.board;
 
 import com.sbs.board.article.ArticleController;
 import com.sbs.board.container.Container;
+import com.sbs.board.controller.Controller;
 import com.sbs.board.dbUtil.MysqlUtil;
 import com.sbs.board.member.MemberController;
 
@@ -49,30 +50,26 @@ public class App {
   }
 
   private void doAction(Rq rq) {
+    Controller controller = getControllerByUrl(rq.getUrlPath());
 
-    if (rq.getUrlPath().equals("/usr/article/write")) {
-      articleController.doWrite();
-    } else if (rq.getUrlPath().equals("/usr/article/list")) {
-      articleController.showList();
-    } else if (rq.getUrlPath().equals("/usr/article/detail")) {
-      articleController.showDetail(rq);
-    } else if (rq.getUrlPath().equals("/usr/article/modify")) {
-      articleController.doModify(rq);
-    } else if (rq.getUrlPath().equals("/usr/article/delete")) {
-      articleController.doDelete(rq);
-    } else if (rq.getUrlPath().equals("/usr/member/join")) {
-      memberController.doJoin(rq);
-    } else if (rq.getUrlPath().equals("/usr/member/login")) {
-      memberController.doLogin(rq);
-    } else if (rq.getUrlPath().equals("/usr/member/logout")) {
-      memberController.doLogout(rq);
-    } else if (rq.getUrlPath().equals("/usr/member/me")) {
-      memberController.showMe(rq);
+    if (controller != null) {
+      controller.performAction(rq);
     } else if (rq.getUrlPath().equals("exit")) {
       System.out.println("프로그램을 종료합니다.");
       System.exit(0); // 프로그램 강제종료
     } else {
       System.out.println("잘못 된 명령어입니다.");
     }
+  }
+
+  private Controller getControllerByUrl(String urlPath) {
+    if(urlPath.startsWith("/usr/article/")) {
+      return articleController;
+    }
+    else if(urlPath.startsWith("/usr/member/")) {
+      return memberController;
+    }
+
+    return null;
   }
 }

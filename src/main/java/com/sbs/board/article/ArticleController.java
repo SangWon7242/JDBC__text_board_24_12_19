@@ -2,17 +2,29 @@ package com.sbs.board.article;
 
 import com.sbs.board.Rq;
 import com.sbs.board.container.Container;
+import com.sbs.board.controller.Controller;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class ArticleController {
+public class ArticleController implements Controller {
   private final ArticleService articleService;
   public Scanner sc;
 
   public ArticleController() {
     articleService = Container.articleService;
     sc = Container.sc;
+  }
+
+  public void performAction(Rq rq) {
+    switch (rq.getUrlPath()) {
+      case "/usr/article/write" -> doWrite();
+      case "/usr/article/list" -> showList();
+      case "/usr/article/detail" -> showDetail(rq);
+      case "/usr/article/modify" -> doModify(rq);
+      case "/usr/article/delete" -> doDelete(rq);
+      default -> System.out.println("해당 경로는 존재하지 않습니다.");
+    }
   }
 
   public void doWrite() {
