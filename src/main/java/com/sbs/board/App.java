@@ -5,6 +5,7 @@ import com.sbs.board.container.Container;
 import com.sbs.board.controller.Controller;
 import com.sbs.board.dbUtil.MysqlUtil;
 import com.sbs.board.member.MemberController;
+import com.sbs.board.reply.ReplyController;
 
 import java.util.Scanner;
 
@@ -12,10 +13,12 @@ public class App {
 
   public ArticleController articleController;
   public MemberController memberController;
+  public ReplyController replyController;
 
   public App() {
     articleController = Container.articleController;
     memberController = Container.memberController;
+    replyController = Container.replyController;
   }
 
   private static boolean isDevMode() {
@@ -65,6 +68,8 @@ public class App {
   private Controller getControllerByUrl(String urlPath) {
     if (urlPath.startsWith("/usr/article/")) {
       return articleController;
+    } else if (urlPath.startsWith("/usr/reply/")) {
+      return replyController;
     } else if (urlPath.startsWith("/usr/member/")) {
       return memberController;
     }
