@@ -154,4 +154,26 @@ public class MemberController {
 
     System.out.printf("\"%s\"님 로그인 되었습니다.\n", username);
   }
+
+  public void doLogout(Rq rq) {
+    if(!rq.isLogined()) {
+      System.out.println("로그인 후 이용해주세요.");
+      return;
+    }
+
+    rq.removeSessionAttr("loginedMember");
+    System.out.println("로그아웃 되었습니다.");
+  }
+
+  public void showMe(Rq rq) {
+    if(!rq.isLogined()) {
+      System.out.println("로그인 후 이용해주세요.");
+      return;
+    }
+
+    Member member = (Member) rq.getSessionAttr("loginedMember");
+    System.out.println("== 내 정보 ==");
+    System.out.printf("로그인 아이디 : %s\n", member.getUsername());
+    System.out.printf("이름 : %s\n", member.getName());
+  }
 }
