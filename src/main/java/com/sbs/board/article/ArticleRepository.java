@@ -132,7 +132,7 @@ public class ArticleRepository {
       sql.append("INNER JOIN `member` AS M");
       sql.append("ON R.memberId = M.id");
       sql.append("WHERE R.articleId = ?", id);
-      sql.append("ORDER BY R.id DESC");
+      sql.append("ORDER BY R.id");
 
       List<Map<String, Object>> replyListMap = MysqlUtil.selectRows(sql);
 

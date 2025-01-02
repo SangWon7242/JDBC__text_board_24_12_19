@@ -4,6 +4,7 @@ import com.sbs.board.Rq;
 import com.sbs.board.container.Container;
 import com.sbs.board.controller.Controller;
 import com.sbs.board.member.Member;
+import com.sbs.board.reply.Reply;
 
 import java.util.List;
 import java.util.Scanner;
@@ -116,9 +117,13 @@ public class ArticleController implements Controller {
       System.out.println("== 댓글 ==");
       System.out.println("번호 | 댓글 | 작성자");
 
-      article.getReplyList().forEach(reply ->
-          System.out.printf("%d | %s | %s\n",
-              reply.getId(), reply.getContent(), reply.getExtra__writerName()));
+      for(int i = article.getReplyList().size() - 1; i >= 0; i--) {
+        Reply reply = article.getReplyList().get(i);
+
+        System.out.printf("%d | %s | %s\n",
+            i + 1, reply.getContent(), reply.getExtra__writerName()
+        );
+      }
 
       System.out.println("==========");
     }
