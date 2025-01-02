@@ -17,6 +17,7 @@ public class Article {
   private String subject;
   private String content;
   private int hit;
+  private List<Reply> replyList;
 
   private String extra__writerName; // 작성자 이름
 

@@ -16,6 +16,8 @@ public class Reply {
   private final int articleId;
   private String content;
 
+  private String extra__writerName; // 작성자 이름
+
   public Reply(Map<String, Object> articleMap) {
     this.id = (int) articleMap.get("id");
     this.regDate = (LocalDateTime) articleMap.get("regDate");
@@ -23,5 +25,9 @@ public class Reply {
     this.memberId = (int) articleMap.get("memberId");
     this.articleId = (int) articleMap.get("articleId");
     this.content = (String) articleMap.get("content");
+
+    if(articleMap.get("extra__writerName") != null) {
+      this.extra__writerName = (String) articleMap.get("extra__writerName");
+    }
   }
 }

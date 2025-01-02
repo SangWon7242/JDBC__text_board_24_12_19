@@ -44,4 +44,8 @@ public class ArticleService {
   public void increaseHit(int id) {
     articleRepository.increaseHit(id);
   }
+
+  public Article findByIdWithReplies(int id) {
+    return articleRepository.findByIdWithReplies(id);
+  }
 }

@@ -29,7 +29,7 @@ public class ArticleController implements Controller {
   }
 
   public void doWrite(Rq rq) {
-    if(!rq.isLogined()) {
+    if (!rq.isLogined()) {
       System.out.println("로그인 후 이용해주세요.");
       return;
     }
@@ -39,7 +39,7 @@ public class ArticleController implements Controller {
     System.out.print("제목 : ");
     String subject = sc.nextLine();
 
-    if(subject.trim().isEmpty()) {
+    if (subject.trim().isEmpty()) {
       System.out.println("제목을 입력해주세요.");
       return;
     }
@@ -47,7 +47,7 @@ public class ArticleController implements Controller {
     System.out.print("내용 : ");
     String content = sc.nextLine();
 
-    if(content.trim().isEmpty()) {
+    if (content.trim().isEmpty()) {
       System.out.println("내용을 입력해주세요.");
       return;
     }
@@ -68,7 +68,7 @@ public class ArticleController implements Controller {
 
     List<Article> articleList = articleService.getArticles(page, pageItemCount, searchKeyword);
 
-    if(articleList == null) {
+    if (articleList == null) {
       System.out.println("게시물이 존재하지 않습니다.");
       return;
     }
@@ -89,11 +89,10 @@ public class ArticleController implements Controller {
       return;
     }
 
+    articleService.increaseHit(id);
+    Article article = articleService.findByIdWithReplies(id);
 
-  articleService.increaseHit(id);
-    Article article = articleService.findById(id);
-
-    if(article == null) {
+    if (article == null) {
       System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
       return;
     }
@@ -106,6 +105,21 @@ public class ArticleController implements Controller {
     System.out.printf("제목 : %s\n", article.getSubject());
     System.out.printf("내용 : %s\n", article.getContent());
     System.out.printf("조회수 : %d\n", article.getHit());
+
+    if(article.getReplyList().isEmpty()) {
+      System.out.println("등록된 댓글이 없습니다.");
+      return;
+    }
+    else {
+      System.out.println("== 댓글 ==");
+      System.out.println("번호 | 댓글 | 작성자");
+
+      article.getReplyList().forEach(reply ->
+          System.out.printf("%d | %s | %s\n",
+              reply.getId(), reply.getContent(), reply.getExtra__writerName()));
+
+      System.out.println("==========");
+    }
   }
 
   public void doModify(Rq rq) {
@@ -116,7 +130,7 @@ public class ArticleController implements Controller {
       return;
     }
 
-    if(!rq.isLogined()) {
+    if (!rq.isLogined()) {
       System.out.println("로그인 후 이용해주세요.");
       return;
     }
@@ -124,12 +138,12 @@ public class ArticleController implements Controller {
     Member member = (Member) rq.getSessionAttr("loginedMember");
     Article article = articleService.findById(id);
 
-    if(article == null) {
+    if (article == null) {
       System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
       return;
     }
 
-    if(article.getMemberId() != member.getId()) {
+    if (article.getMemberId() != member.getId()) {
       System.out.println("글 수정에 대한 권한이 없습니다.");
       return;
     }
@@ -139,7 +153,7 @@ public class ArticleController implements Controller {
     System.out.print("제목 : ");
     String subject = sc.nextLine();
 
-    if(subject.trim().isEmpty()) {
+    if (subject.trim().isEmpty()) {
       System.out.println("제목을 입력해주세요.");
       return;
     }
@@ -147,7 +161,7 @@ public class ArticleController implements Controller {
     System.out.print("내용 : ");
     String content = sc.nextLine();
 
-    if(content.trim().isEmpty()) {
+    if (content.trim().isEmpty()) {
       System.out.println("내용을 입력해주세요.");
       return;
     }
@@ -165,7 +179,7 @@ public class ArticleController implements Controller {
       return;
     }
 
-    if(!rq.isLogined()) {
+    if (!rq.isLogined()) {
       System.out.println("로그인 후 이용해주세요.");
       return;
     }
@@ -173,12 +187,12 @@ public class ArticleController implements Controller {
     Member member = (Member) rq.getSessionAttr("loginedMember");
     Article article = articleService.findById(id);
 
-    if(article == null) {
+    if (article == null) {
       System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
       return;
     }
 
-    if(article.getMemberId() != member.getId()) {
+    if (article.getMemberId() != member.getId()) {
       System.out.println("글 수정에 대한 권한이 없습니다.");
       return;
     }
