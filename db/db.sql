@@ -25,6 +25,9 @@ CREATE TABLE `member` (
 # article 테이블에 memberId 추가
 ALTER TABLE article ADD COLUMN memberId INT UNSIGNED NOT NULL AFTER updateDate;
 
+# article 테이블에 hit 칼럼 추가
+ALTER TABLE article ADD COLUMN hit INT UNSIGNED NOT NULL AFTER content;
+
 # reply테이블 생성
 CREATE TABLE reply (
 	id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -56,28 +59,26 @@ SET regDate = NOW(),
 updateDate = NOW(),
 memberId = 1,
 `subject` = '제목1',
-content = '내용1';
+content = '내용1',
+hit = 10;
 
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
-memberId = 2,
-`subject` = '제목2',
-content = '내용2';
-
-# 댓글 테스트 데이터
-# 1번 회원이 1번 글에 대한 댓글
-INSERT INTO reply
-SET regDate = NOW(),
-updateDate = NOW(),
 memberId = 1,
-articleId = 1,
-content = '내용에 대한 답변 1';
+`subject` = '제목2',
+content = '내용2',
+hit = 15;
 
-# 2번 회원이 1번 글에 대한 댓글
-INSERT INTO reply
-SET regDate = NOW(),
-updateDate = NOW(),
-memberId = 2,
-articleId = 1,
-content = '내용에 대한 답변 2';
+SELECT COUNT(*) FROM article;
+
+# 다량의 게시물 테스트 데이터(개수 증가)
+INSERT INTO article (regDate, updateDate, memberId, `subject`, content, hit)
+SELECT
+NOW(),
+NOW(),
+CASE WHEN RAND() < 0.5 THEN 1 ELSE 2 END AS RandomValue,
+CONCAT('제목-', UUID()),
+CONCAT('내용-', UUID()),
+CAST(10 + (30-10) * RAND() AS INT)
+FROM article;
