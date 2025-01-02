@@ -189,4 +189,14 @@ public class ArticleRepository {
 
     MysqlUtil.update(sql);
   }
+
+  public int getArticleCount() {
+    SecSql sql = new SecSql();
+    sql.append("SELECT COUNT(*)");
+    sql.append("FROM article");
+
+    int totalCount = MysqlUtil.selectRowIntValue(sql);
+
+    return totalCount;
+  }
 }

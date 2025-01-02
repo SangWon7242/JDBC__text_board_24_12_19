@@ -48,4 +48,8 @@ public class ArticleService {
   public Article findByIdWithReplies(int id) {
     return articleRepository.findByIdWithReplies(id);
   }
+
+  public int getArticleCount() {
+    return articleRepository.getArticleCount();
+  }
 }

@@ -73,7 +73,9 @@ public class ArticleController implements Controller {
       return;
     }
 
-    System.out.println("== 게시물 리스트 ==");
+    int totalCount = articleService.getArticleCount(); // 전체 게시물 개수
+
+    System.out.printf("== 게시물 리스트 (총 개수 : %d) ==\n", totalCount);
     System.out.println("번호 | 제목 | 작성자");
 
     articleList.forEach(article ->
