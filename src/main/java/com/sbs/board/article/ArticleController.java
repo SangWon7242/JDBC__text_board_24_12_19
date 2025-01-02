@@ -4,7 +4,6 @@ import com.sbs.board.Rq;
 import com.sbs.board.container.Container;
 import com.sbs.board.controller.Controller;
 import com.sbs.board.member.Member;
-import com.sbs.board.reply.ReplyService;
 
 import java.util.List;
 import java.util.Scanner;
@@ -21,7 +20,7 @@ public class ArticleController implements Controller {
   public void performAction(Rq rq) {
     switch (rq.getUrlPath()) {
       case "/usr/article/write" -> doWrite(rq);
-      case "/usr/article/list" -> showList();
+      case "/usr/article/list" -> showList(rq);
       case "/usr/article/detail" -> showDetail(rq);
       case "/usr/article/modify" -> doModify(rq);
       case "/usr/article/delete" -> doDelete(rq);
@@ -61,8 +60,13 @@ public class ArticleController implements Controller {
     System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
   }
 
-  public void showList() {
-    List<Article> articleList = articleService.getArticles();
+  public void showList(Rq rq) {
+    int page = rq.getIntParam("page", 1);
+    String searchKeyword = rq.getParam("searchKeyword", "");
+
+    int pageItemCount = 10; // 한페이지당 보여질 리스트 개수
+
+    List<Article> articleList = articleService.getArticles(page, pageItemCount, searchKeyword);
 
     if(articleList == null) {
       System.out.println("게시물이 존재하지 않습니다.");

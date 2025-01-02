@@ -28,20 +28,51 @@ public class ArticleRepository {
     return id;
   }
 
-  public List<Article> getArticles() {
+  public List<Article> getArticles(Map<String, Object> args) {
     SecSql sql = new SecSql();
+
+    String searchKeyword = "";
+
+    if(args.containsKey("searchKeyword")) {
+      searchKeyword = (String) args.get("searchKeyword");
+    }
+
+    int limitFrom = -1;
+    int limitTake = -1;
+
+    if(args.containsKey("limitFrom")) {
+      limitFrom = (int) args.get("limitFrom");
+    }
+
+    if(args.containsKey("limitTake")) {
+      limitTake = (int) args.get("limitTake");
+    }
+
     sql.append("SELECT A.*");
     sql.append(", M.name AS `extra__writerName`");
     sql.append("FROM article AS A");
     sql.append("INNER JOIN `member` AS M");
     sql.append("ON A.memberId = M.id");
+    if(!searchKeyword.isEmpty()) {
+      sql.append("WHERE A.`subject` LIKE CONCAT('%', ?, '%')", searchKeyword);
+    }
+
     sql.append("ORDER BY id DESC");
+
+    if(limitFrom != -1) {
+      sql.append("LIMIT ?, ?", limitFrom, limitTake);
+    }
+
+    System.out.println("limitFrom : " + limitFrom);
+    System.out.println("limitTake : " + limitTake);
 
     List<Map<String, Object>> articleListMap = MysqlUtil.selectRows(sql);
 
     if(articleListMap.isEmpty()) {
       return null;
     }
+
+    List<Article> articleList = new ArrayList<>();
 
     for(Map<String, Object> articleMap : articleListMap) {
       articleList.add(new Article(articleMap));
