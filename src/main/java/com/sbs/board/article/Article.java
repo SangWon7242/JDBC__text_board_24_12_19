@@ -1,8 +1,10 @@
 package com.sbs.board.article;
 
+import com.sbs.board.reply.Reply;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -14,6 +16,7 @@ public class Article {
   private final int memberId;
   private String subject;
   private String content;
+  private int hit;
 
   private String extra__writerName; // 작성자 이름
 
@@ -24,6 +27,7 @@ public class Article {
     this.memberId = (int) articleMap.get("memberId");
     this.subject = (String) articleMap.get("subject");
     this.content = (String) articleMap.get("content");
+    this.hit = (int) articleMap.get("hit");
 
     if(articleMap.get("extra__writerName") != null) {
       this.extra__writerName = (String) articleMap.get("extra__writerName");

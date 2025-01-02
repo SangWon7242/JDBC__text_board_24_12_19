@@ -4,6 +4,7 @@ import com.sbs.board.Rq;
 import com.sbs.board.container.Container;
 import com.sbs.board.controller.Controller;
 import com.sbs.board.member.Member;
+import com.sbs.board.reply.ReplyService;
 
 import java.util.List;
 import java.util.Scanner;
@@ -84,6 +85,8 @@ public class ArticleController implements Controller {
       return;
     }
 
+
+  articleService.increaseHit(id);
     Article article = articleService.findById(id);
 
     if(article == null) {
@@ -98,6 +101,7 @@ public class ArticleController implements Controller {
     System.out.printf("작성자 : %s\n", article.getExtra__writerName());
     System.out.printf("제목 : %s\n", article.getSubject());
     System.out.printf("내용 : %s\n", article.getContent());
+    System.out.printf("조회수 : %d\n", article.getHit());
   }
 
   public void doModify(Rq rq) {
